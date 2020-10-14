@@ -1,0 +1,42 @@
+version: '2'
+services:
+  nginx:
+    build:
+      context: ./
+      dockerfile: docker/nginx.docker
+    volumes:
+      - ./docker/nginx:/etc/nginx/conf.d
+      - ./:/var/www:cached
+    ports:
+      - "8086:8080"
+    links:
+      - php
+  php:
+    build:
+      context: ./
+      dockerfile: docker/php-fpm.docker
+    ports:
+      - "9012:9004"
+    volumes:
+      - ./:/var/www:cached
+    links:
+      - mysql
+    environment:
+      - "DB_PORT=3306"
+      - "DB_HOST=mysql"
+      - "DB_NAME=fins"
+      - "DB_USERNAME=fins"
+      - "DB_PASSWORD=fins"
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - ./storage/docker/mysql:/var/lib/mysql:cached
+      - ./storage/docker/dump.sql.gz:/dump.sql.gz:cached
+    environment:
+      - "MYSQL_ROOT_PASSWORD=fins"
+      - "MYSQL_USER=fins"
+      - "MYSQL_PASSWORD=fins"
+      - "MYSQL_DATABASE=fins"
+    ports:
+      - "3312:3306"
+    tty: true
