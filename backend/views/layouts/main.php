@@ -37,8 +37,8 @@ AppAsset::register($this);
     ]);
     $menuItems = [
         ['label' => 'История транзакции', 'url' => ['/transactions/history']],
-        ['label' => 'Вывести средства', 'url' => ['/transactions/expanse']],
-        ['label' => 'Добавить средства', 'url' => ['/site/income']],
+        ['label' => 'Вывести средства', 'url' => ['/transactions/expense']],
+        ['label' => 'Добавить средства', 'url' => ['/transactions/income']],
     ];
     if (Yii::$app->user->isGuest) {
         $menuItems[] = ['label' => 'Войти', 'url' => ['/site/login']];

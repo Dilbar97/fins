@@ -21,6 +21,8 @@ use yii\web\IdentityInterface;
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
+ * @property double $balance
+ * @property string $role
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -55,6 +57,8 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+            [['balance'], 'double'],
+            [['role'], 'string'],
         ];
     }
 
@@ -208,5 +212,10 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    public static function getUsernameById($userId)
+    {
+        return self::findOne($userId)->username;
     }
 }
